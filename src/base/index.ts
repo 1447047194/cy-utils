@@ -15,8 +15,8 @@ export const judgeType = function(val: any): String {
  * @description 判断一个值是否是数字
  * @author CY
  * @date 2024-02-29
- * @param val 要判断的值
- * @returns 
+ * @param { Any } val 要判断的值
+ * @returns { Boolean }
 */
 export const isNumber = function(val: any): Boolean {
   return judgeType(val) === 'Number'
@@ -24,7 +24,7 @@ export const isNumber = function(val: any): Boolean {
 
 /**
  * @description 判断一个值是否是NaN
- * @author CY <1447047194@qq.com>
+ * @author CY
  * @date 2024-02-29
  * @param { Any } val
  * @returns { Boolean }
