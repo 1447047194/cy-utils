@@ -21,5 +21,14 @@ export default [
       entryFileNames: '[name].esm.js',
     },
     plugins: [resolve(), commonjs(), typescript(), terser(), cleanup()],
+  }, {
+    input: './src/index.ts',
+    output: {
+      dir: 'dist',
+      format: 'iife',
+      name: 'cyUtils',
+      entryFileNames: '[name].min.js',
+    },
+    plugins: [resolve(), commonjs(), typescript(), terser(), cleanup()],
   }
 ];
