@@ -1,10 +1,12 @@
 // 日期相关工具函数
 /**
- * @description 日期格式化
- * @param {*} time 
- * @param {*} pattern 
- * @returns 
- */
+ * @description 日期年月日 时分秒转换
+ * @author Lin
+ * @date 2024-03-06 15:27:36
+ * @param {*} time 要转换的时间
+ * @param {*} pattern 要转换的格式 默认为{y}-{m}-{d} {h}:{i}:{s} 年月日时分秒
+ * @returns  DATE
+*/
 export function parseTime(time: Date | string | number, pattern?: string) {
   if (arguments.length === 0 || !time) {
     return null;
