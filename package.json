@@ -15,7 +15,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/1447047194/cy-utils.git"
+		"url": "git+https://github.com/cyRzw/cy-utils.git"
 	},
 	"keywords": [
 		"utils"
@@ -26,9 +26,9 @@
 		"access": "public"
 	},
 	"bugs": {
-		"url": "https://github.com/1447047194/cy-utils/issues"
+		"url": "https://github.com/cyRzw/cy-utils/issues"
 	},
-	"homepage": "https://github.com/1447047194/cy-utils#readme",
+	"homepage": "https://github.com/cyRzw/cy-utils#readme",
 	"dependencies": {
 		"@rollup/plugin-commonjs": "^25.0.7",
 		"@rollup/plugin-node-resolve": "^15.2.3",
