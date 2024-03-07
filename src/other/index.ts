@@ -5,17 +5,17 @@
  * @param { Function } fn 要防抖的函数
  * @param { Number } wait 等待执行的时间，单位ms
  * @returns { Function }
-*/
-export const debounce = function(fn: Function, wait: number): Function {
-  let timer: NodeJS.Timeout | null =  null
-  return function<T>(this: T) {
-    const args = arguments
-    const context = this
-    timer && clearTimeout(timer)
-    timer = setTimeout(() => {
-      fn.apply(context, args)
-    }, wait)
-  }
+ */
+export const debounce = function (fn: Function, wait: number): Function {
+	let timer: NodeJS.Timeout | null = null
+	return function <T>(this: T) {
+		const args = arguments
+		const context = this
+		timer && clearTimeout(timer)
+		timer = setTimeout(() => {
+			fn.apply(context, args)
+		}, wait)
+	}
 }
 
 /**
@@ -25,18 +25,65 @@ export const debounce = function(fn: Function, wait: number): Function {
  * @param { Function } fn 要节流的函数
  * @param { Number } wait 等待执行的时间，单位ms
  * @returns { Function }
-*/
-// 节流函数 
-export const throttle = function(fn: Function, wait: number): Function {
-  let timer: NodeJS.Timeout | null = null
-  return function<T>(this: T) {
-    const args = arguments
-    if (!timer) {
-      fn.apply(this, args)
-      timer = setTimeout(() => {
-        timer && clearTimeout(timer)
-        timer = null
-      }, wait)
-    }
-  }
+ */
+export const throttle = function (fn: Function, wait: number): Function {
+	let timer: NodeJS.Timeout | null = null
+	return function <T>(this: T) {
+		const args = arguments
+		if (!timer) {
+			fn.apply(this, args)
+			timer = setTimeout(() => {
+				timer && clearTimeout(timer)
+				timer = null
+			}, wait)
+		}
+	}
+}
+
+/**
+ * @description 生成随机32位字符串---会替换给定字符串的x和y为随机字符串
+ * @author CY
+ * @date 2024-03-07 16:41:51
+ * @param {String} str 包含xy的字符串
+ * @returns {String} 默认32位字符串-根据传入的str生成对应长度的字符串
+ */
+export const getUuid = function (str: String = 'xxyyxxx3xyxx7xx4yxx2xxxx6xxxxxxx'): String {
+	return str.replace(/[xy]/g, function (c) {
+		const r = (Math.random() * 16) | 0
+		const v = c === 'x' ? r : (r & 0x3) | 0x8
+		return v.toString(16)
+	})
+}
+
+/**
+ * @description 复制文本（异步）
+ * @author CY
+ * @date 2024-03-07 17:56:14
+ * @param { String } text 要复制的文本
+ * @returns {Promise} 返回一个Promise，复制成功抛出复制的文本，失败抛出false
+ */
+export const copyTxt = function <T extends string>(text: T): Promise<T> {
+	return new Promise((resolve, reject) => {
+		// TODO：优先使用新api Clipboard
+		try {
+			navigator.clipboard.writeText(text).then(() => {
+				resolve(text)
+			})
+		} catch (error) {
+			console.log('-----Clipboard api copy is failed')
+			try {
+				const input = document.createElement('textarea')
+				input.value = text
+				document.body.appendChild(input)
+				input.select()
+				const succ = document.execCommand('copy')
+				input.remove()
+				if (succ) return resolve(text)
+				console.log('-----execCommand copy is failed')
+				reject(false)
+			} catch (error) {
+				reject(false)
+			}
+		}
+	})
 }
