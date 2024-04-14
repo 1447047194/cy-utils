@@ -87,3 +87,50 @@ export const copyTxt = function <T extends string>(text: T): Promise<T> {
 		}
 	})
 }
+
+/**
+ * @description 深拷贝
+ * @author CY
+ * @date 2024-04-14 14:29:00
+ * @param {T} obj
+ * @returns
+ */
+export const deepClone = function <T>(obj: T): T {
+	if (typeof obj !== 'object' || typeof obj === null) return obj
+	const isArray = Array.isArray(obj)
+	if (isArray) {
+		const newArr: any[] = []
+		obj.forEach((item, index) => (newArr[index] = deepClone(item)))
+		return newArr as T
+	} else {
+		const newObj: { [key: string]: any } = {}
+		for (let k in obj) {
+			newObj[k] = deepClone(obj[k])
+		}
+		return newObj as T
+	}
+}
+
+/**
+ * @description 扁平结构转树状
+ * @author CY
+ * @date 2024-04-12 14:12:40
+ * @param {Array} arr 扁平数据
+ * @param {String} id id字段名
+ * @param {String} pid 父id字段名
+ * @param {String} children 子节点字段名
+ * @returns {Array} tree 树状结构
+ */
+export const arrayToTree = function (arr: Array<any> = [], id: string = 'id', pid: string = 'pid', children: string = 'children'): Array<any> {
+	const data: any[] = deepClone(arr)
+	const idMap = new Map()
+	const tree: any[] = []
+	data.forEach(item => idMap.set(item[id], item))
+	data.forEach(item => {
+		if (!item[pid]) return tree.push(item)
+		const parent = idMap.get(item[pid])
+		if (!parent[children]) parent[children] = []
+		parent[children].push(item)
+	})
+	return tree
+}
