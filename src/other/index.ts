@@ -96,7 +96,7 @@ export const copyTxt = function <T extends string>(text: T): Promise<T> {
  * @returns
  */
 export const deepClone = function <T>(obj: T): T {
-	if (typeof obj !== 'object' || typeof obj === null) return obj
+	if (typeof obj !== 'object' || obj === null) return obj
 	const isArray = Array.isArray(obj)
 	if (isArray) {
 		const newArr: any[] = []
