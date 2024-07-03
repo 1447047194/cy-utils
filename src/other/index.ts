@@ -134,3 +134,26 @@ export const arrayToTree = function (arr: Array<any> = [], id: string = 'id', pi
 	})
 	return tree
 }
+
+/**
+ * @description bytes字节单位转换
+ * @author CY
+ * @date 2024-06-27 17:13:27
+ * @param {number} bytes 字节
+ * @param {number} decimal 精度
+ * @returns {string} 字节单位
+ */
+export const formatBytes = function (bytes: number, decimal: number = 2): string {
+	if (bytes === 0) return '0B'
+	const k = 1024
+	const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+	const dm = decimal && decimal > 0 ? decimal : 0
+	let i = 0
+	let endStr = dm > 0 ? ''.padEnd(dm, '0') : ''
+	while (bytes >= k && i < units.length - 1) {
+		bytes /= k
+		i++
+	}
+	if (dm === 0) return `${bytes}${units[i]}`
+	return Number.isInteger(bytes) ? `${bytes}${units[i]}` : bytes.toFixed(dm).endsWith(endStr) ? `${bytes.toFixed(dm).split('.')[0]}${units[i]}` : `${bytes.toFixed(dm)}${units[i]}`
+}
