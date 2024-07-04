@@ -157,3 +157,35 @@ export const formatBytes = function (bytes: number, decimal: number = 2): string
 	if (dm === 0) return `${bytes}${units[i]}`
 	return Number.isInteger(bytes) ? `${bytes}${units[i]}` : bytes.toFixed(dm).endsWith(endStr) ? `${bytes.toFixed(dm).split('.')[0]}${units[i]}` : `${bytes.toFixed(dm)}${units[i]}`
 }
+
+interface IOptions {
+	valueKey?: string
+	value: string | number | (string | number)[]
+	getKey?: string
+	flag?: boolean
+}
+/**
+ * @description 根据value值，获取一组数据对象的(某个 | 多个)属性值或者某条数据（通常用于下拉选项根据value获取label值）
+ * @author CY
+ * @date 2024-07-04 16:35:24
+ * @param {array} data 数据列表
+ * @param {object} options 数据列表
+ * @param {string} options.valueKey value对应的属性名(唯一键)
+ * @param {string} options.value value值
+ * @param {string} options.getKey 匹配value成功后，要获取的key值
+ * @param {string} options.flag 获取单个属性值true | 获取整条数据false，默认true
+ * @returns 匹配value值的item[getKey] || item项，当value为数组时，返回数组
+ */
+export const getSelectedItems = function <T>(data: Array<{ [key: string]: any }>, options: IOptions): any[] | any {
+	const { valueKey = 'value', value, getKey = 'label', flag = true } = options
+	const type = typeof value
+	const isArray = value instanceof Array
+	if (!['string', 'number'].includes(type) || (type === 'object' && !isArray))
+		throw new Error(`value类型错误：期望得到“string | number | (string | number)[]”类型，但得到了${type}类型`)
+	const valueMap = new Map()
+	data.forEach(item => valueMap.set(item[valueKey], flag ? item[getKey] : item))
+	if (!isArray) return valueMap.get(value)
+	const arr: Array<T[keyof T]> = []
+	value.forEach(v => arr.push(valueMap.get(v)))
+	return arr
+}
